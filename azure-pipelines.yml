@@ -1,40 +1,16 @@
-<<<<<<< HEAD
-# Pipeline básico para un proyecto Python simple
-
-=======
->>>>>>> a65ab9c (Agregué pipeline con ambientes Dev, QA y Production)
 trigger:
 - main
 
 pool:
   vmImage: ubuntu-latest
 
-<<<<<<< HEAD
-steps:
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.11'
-  displayName: 'Configurar Python 3.11'
-
-- script: |
-    echo "Instalando dependencias (si las hay)"
-    pip install --upgrade pip
-    if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-  displayName: 'Instalar dependencias'
-
-- script: |
-    echo "Ejecutando script principal..."
-    python main.py
-  displayName: 'Ejecutar Hola Mundo'
-
-=======
 stages:
 - stage: Development
   displayName: 'Development Stage'
   jobs:
   - deployment: DeployDevelopment
     displayName: 'Deploy to Development'
-    environment: 'development'
+    environment: 'Development'
     strategy:
       runOnce:
         deploy:
@@ -44,13 +20,13 @@ stages:
               python main.py
             displayName: 'Run Hola Mundo in Dev'
 
-- stage: Quality Assurance
-  displayName: 'QA Stage'
+- stage: QualityAssurance
+  displayName: 'Quality Assurance Stage'
   dependsOn: Development
   jobs:
   - deployment: DeployQA
     displayName: 'Deploy to QA'
-    environment: 'qa'
+    environment: 'Quality assurance'   # <-- Aquí sí puedes dejarlo con espacio
     strategy:
       runOnce:
         deploy:
@@ -62,11 +38,11 @@ stages:
 
 - stage: Production
   displayName: 'Production Stage'
-  dependsOn: QA
+  dependsOn: QualityAssurance
   jobs:
   - deployment: DeployProduction
     displayName: 'Deploy to Production'
-    environment: 'production'
+    environment: 'Production'
     strategy:
       runOnce:
         deploy:
@@ -75,5 +51,3 @@ stages:
               echo "Código final en Producción"
               python main.py
             displayName: 'Run Hola Mundo in Production'
-
->>>>>>> a65ab9c (Agregué pipeline con ambientes Dev, QA y Production)
