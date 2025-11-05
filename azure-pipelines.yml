@@ -1,11 +1,15 @@
+<<<<<<< HEAD
 # Pipeline básico para un proyecto Python simple
 
+=======
+>>>>>>> a65ab9c (Agregué pipeline con ambientes Dev, QA y Production)
 trigger:
 - main
 
 pool:
   vmImage: ubuntu-latest
 
+<<<<<<< HEAD
 steps:
 - task: UsePythonVersion@0
   inputs:
@@ -23,3 +27,53 @@ steps:
     python main.py
   displayName: 'Ejecutar Hola Mundo'
 
+=======
+stages:
+- stage: Development
+  displayName: 'Development Stage'
+  jobs:
+  - deployment: DeployDevelopment
+    displayName: 'Deploy to Development'
+    environment: 'development'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: |
+              echo "Desplegando en Development..."
+              python main.py
+            displayName: 'Run Hola Mundo in Dev'
+
+- stage: Quality Assurance
+  displayName: 'QA Stage'
+  dependsOn: Development
+  jobs:
+  - deployment: DeployQA
+    displayName: 'Deploy to QA'
+    environment: 'qa'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: |
+              echo "Pruebas en QA..."
+              python main.py
+            displayName: 'Run Hola Mundo in QA'
+
+- stage: Production
+  displayName: 'Production Stage'
+  dependsOn: QA
+  jobs:
+  - deployment: DeployProduction
+    displayName: 'Deploy to Production'
+    environment: 'production'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: |
+              echo "Código final en Producción"
+              python main.py
+            displayName: 'Run Hola Mundo in Production'
+
+>>>>>>> a65ab9c (Agregué pipeline con ambientes Dev, QA y Production)
