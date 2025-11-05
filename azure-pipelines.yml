@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  vmImage: Local-Linux
+  name: Local-Linux
 
 stages:
 - stage: Development
