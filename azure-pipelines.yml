@@ -16,6 +16,7 @@ stages:
         deploy:
           steps:
           - script: |
+              ls -R   # opcional, para debug
               echo "Desplegando en Development..."
               python main.py
             displayName: 'Run Hola Mundo in Dev'
@@ -26,7 +27,7 @@ stages:
   jobs:
   - deployment: DeployQA
     displayName: 'Deploy to QA'
-    environment: 'Quality assurance'   # <-- Aquí sí puedes dejarlo con espacio
+    environment: 'Quality assurance'
     strategy:
       runOnce:
         deploy:
